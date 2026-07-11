@@ -1,0 +1,51 @@
+{
+	"zoom": 0.4,
+	"speed": 2,
+	"hud": "default",
+	"charactersOffset": {
+		"type": {
+			"opponent": {
+				"x": -500,
+				"y": 160
+			},
+			"player": {
+				"x": 650,
+				"y": 150
+			},
+			"extra": {
+				"x": 890,
+				"y": 130
+			}
+		}
+	},
+	"spritesConfig": {
+		"directory": "red",
+		"sprites": [
+			{
+				"id": "bg",
+				"properties": {
+					"x": -3000,
+					"y": -1100,
+					"scrollFactor": {
+						"x": 0.25,
+						"y": 0.25
+					},
+					"scale": {
+						"x": 2,
+						"y": 2
+					}
+				}
+			},
+			{
+				"id": "ground",
+				"properties": {
+					"y": 500,
+					"scale": {
+						"x": 0.75
+					}
+				}
+			}
+		]
+	},
+	"format": "ale-stage-v0.1"
+}

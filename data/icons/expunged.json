@@ -1,0 +1,11 @@
+{
+	"images": [
+		"expunged"
+	],
+	"bopScale": {
+		"x": 1.5,
+		"y": 0.75
+	},
+	"speed": 0.4,
+	"format": "ale-icon-v0.1"
+}
