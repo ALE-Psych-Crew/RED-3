@@ -30,8 +30,17 @@ function postCamerasInit()
 var opponentNotes:Int = 0;
 var playerNotes:Int = 0;
 
+final cameraMatrix:Array<Array<Float>> = [
+    [-1, 0],
+    [0, 1],
+    [0, -1],
+    [1, 0]
+];
+
 function onNoteHit(note:Note, character:Character)
+{
     if (note.type == 'arrow')
+    {
         if (character.type == 'opponent')
         {
             opponentNotes++;
@@ -40,6 +49,17 @@ function onNoteHit(note:Note, character:Character)
         } else {
             playerNotes++;
         }
+
+        if (character != cameraTarget)
+            return;
+
+        final data:Array<Float> = cameraMatrix[note.data];
+
+        final factor:Float = 25;
+
+        camGame.offset.set(data[0] * factor, data[1] * factor);
+    }
+}
 
 function postScoreTextUpdate()
     scoreText.text += '    Notes: ' + opponentNotes + ' / ' + playerNotes;

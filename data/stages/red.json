@@ -25,7 +25,7 @@
 				"id": "bg",
 				"properties": {
 					"x": -3000,
-					"y": -1100,
+					"y": -1500,
 					"scrollFactor": {
 						"x": 0.25,
 						"y": 0.25
@@ -35,6 +35,19 @@
 						"y": 2
 					}
 				}
+			},
+			{
+				"id": "tung",
+				"properties": {
+					"x": -2500,
+					"y": 1500,
+					"scrollFactor": {
+						"x": 0.5,
+						"y": 0.5
+					},
+					"angularVelocity": 200
+				},
+				"color": "0xFF0000"
 			},
 			{
 				"id": "ground",
