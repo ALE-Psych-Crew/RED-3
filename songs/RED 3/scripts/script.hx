@@ -1,9 +1,20 @@
+import flixel.text.FlxText.FlxTextBorderStyle;
 import flixel.addons.effects.FlxTrail;
 
 import funkin.visuals.FXCamera;
 
 final splitCamera:FXCamera = new FXCamera(FlxG.width / 2, 0, FlxG.width / 2);
 splitCamera.exists = false;
+
+var subtitle:FlxText = add(new FlxText(0, FlxG.height * 0.7, FlxG.width));
+subtitle.setFormat(Paths.font('vcr.ttf'), 100, FlxColor.PINK, 'center', FlxTextBorderStyle.OUTLINE, FlxColor.fromRGB(200, 0, 0));
+subtitle.borderSize = 5;
+
+function setSubtitle(?str:String)
+    if (str == null)
+        subtitle.text = '';
+    else
+        subtitle.text += str;
 
 var dadTrail:FlxTrail;
 
@@ -26,6 +37,8 @@ function postCreate()
     camHUD.alpha = 0;
 
     opponentStrumLines.members[0].alpha = 0.5;
+
+    subtitle.camera = camOther;
 }
 
 function postSongStart()
@@ -318,15 +331,60 @@ function onSafeBeatHit(curBeat:Int)
             camGame.targetZoom = 0.8;
 
         case 904:
+            epicBars(0);
+
+            allowCameraMoving = false;
+
+            camGame.position.set(-350, 550);
+            camGame.targetZoom = 0.5;
             camGame.zoomSpeed = 0.5;
-            camGame.targetZoom = 0.3;
+
+            FlxTween.tween(camHUD, {alpha: 0}, Conductor.secCrochet * 6);
+
+        case 905:
+            setSubtitle('OH');
+
+        case 906:
+            setSubtitle(' MY');
+        
+        case 908:
+            setSubtitle(' GOD');
+
+        case 910:
+            subtitle.text = 'you';
+
+        case 911:
+            subtitle.text = 'you BAS';
 
         case 912:
             epicBars(FlxG.height / 2, Conductor.secCrochet * 6, FlxEase.elasticIn);
 
             camHUD.targetZoom = 1;
 
+        case 914:
+            setSubtitle('TARD');
+
+        case 916:
+            setSubtitle(', Mol');
+
+        case 917:
+            setSubtitle('dy');
+
+        case 919:
+            subtitle.text = '>:c';
+
         case 920:
+            subtitle.text = 'AAAEAEAEAE';
+
+            dadStrumLine.alpha = 0.25;
+
+            FlxTween.cancelTweensOf(camHUD);
+
+            camHUD.alpha = 1;
+            
+            FlxTween.tween(subtitle, {x: FlxG.width / 4, angle: 45}, Conductor.secCrochet * 4, {ease: FlxEase.cubeOut});
+            FlxTween.tween(subtitle, {y: FlxG.height, alpha: 0}, Conductor.secCrochet * 4, {ease: FlxEase.cubeIn});
+            
             epicBars(0, Conductor.secCrochet, FlxEase.elasticOut);
 
             changeCharacter(bf, 'bfScared');
@@ -374,6 +432,18 @@ function onSafeBeatHit(curBeat:Int)
 
             splitCamera.zoomSpeed = 4;
 
+        case 921:
+            subtitle.text = 'EAEAHGAH';
+
+        case 922:
+            subtitle.text = 'MHMHMHMMHA';
+
+        case 923:
+            subtitle.text = 'UGHHHHHHH';
+
+        case 924:
+            subtitle.text = 'uwu i\'m furry guys';
+
         case 936:
             camGame.targetZoom = 0.3;
 
@@ -402,6 +472,8 @@ function onSafeBeatHit(curBeat:Int)
             splitCamera.tweenZoom(1.25, Conductor.secCrochet * 16);
 
         case 984:
+            changeCharacter(bf, 'bfAir');
+
             camGame.cancelZoomTween();
             camGame.targetZoom = 0.3;
 
@@ -413,13 +485,19 @@ function onSafeBeatHit(curBeat:Int)
 
             FlxTween.tween(splitCamera, {x: FlxG.width / 4}, Conductor.secCrochet * 4, {ease: FlxEase.cubeOut});
 
+            speed = 1;
+
+            FlxTween.tween(game, {speed: 10}, Conductor.secCrochet * 64);
+
         case 1000:
             splitCamera.targetZoom = 0.9;
 
-        case 1016:
+        case 1016:            
             splitCamera.targetZoom = 0.8;
 
         case 1032:
+            changeCharacter(bf, 'bfScared');
+
             splitCamera.targetZoom = 0.7;
 
         case 1044:
@@ -431,15 +509,78 @@ function onSafeBeatHit(curBeat:Int)
             FlxTween.tween(camGame, {alpha: 1}, Conductor.secCrochet * 4, {ease: FlxEase.cubeOut});
 
         case 1048:
+            camGame.shake(0.005, Conductor.secCrochet * 224);
+            camHUD.shake(0.0025, Conductor.secCrochet * 128);
+            splitCamera.shake(0.005, Conductor.secCrochet * 128);
+
             updateFunc = null;
 
             allowCameraMoving = true;
+
+            camGame.tweenZoom(0.5, Conductor.secCrochet * 32);
+
+        case 1080:
+            camGame.tweenZoom(1, Conductor.secCrochet * 16);
+
+        case 1096:
+            camGame.tweenZoom(0.3, Conductor.secCrochet * 16);
+
+        case 1111:
+            epicBars(FlxG.height / 2);
+
+        case 1112:
+            epicBars(0);
+
+            FlxTween.cancelTweensOf(splitCamera);
+            FlxTween.cancelTweensOf(splitCamera.flashSprite);
+
+            allowCameraMoving = false;
+
+            camGame.reset();
+            splitCamera.reset();
+
+            splitCamera.x = -FlxG.width;
+            splitCamera.y = FlxG.height / 2;
+            splitCamera.alpha = 1;
+            splitCamera.flashSprite.rotation = 0;
+            splitCamera.width = FlxG.width;
+            splitCamera.height = FlxG.height / 2;
+            splitCamera.exists = true;
+            splitCamera.targetAngle = -2.5;
+
+            updateFunc = elapsed -> {
+                splitCamera.position.x = Math.sin(curTime * 2) * 50 + 325;
+                splitCamera.position.y = Math.cos(curTime * 4) * 50 + 825;
+            };
+
+            camGame.height = FlxG.height / 2;
+            camGame.targetZoom = 0.5;
+            camGame.x = FlxG.width;
+            camGame.y = 0;
+            camGame.angle = 2.5;
+            camGame.position.x = -100;
+            camGame.position.y = 500;
+
+            FlxTween.tween(camGame, {x: 0}, Conductor.secCrochet * 4, {ease: FlxEase.cubeOut});
+            FlxTween.tween(splitCamera, {x: 0}, Conductor.secCrochet * 4, {ease: FlxEase.cubeOut});
+
+        case 1176:
+            changeCharacter(bf, 'bfAir');
+
+            FlxTween.tween(camGame, {height: FlxG.height}, Conductor.secCrochet * 4, {ease: FlxEase.cubeOut});
+            FlxTween.tween(camHUD, {alpha: 0}, Conductor.secCrochet * 16, {ease: FlxEase.cubeOut});
+            FlxTween.tween(splitCamera, {y: FlxG.height, alpha: 0}, Conductor.secCrochet * 2, {ease: FlxEase.cubeIn, onComplete: _ -> splitCamera.exists = false});
+
+            updateFunc = null;
+
+            camGame.position.set(300, 500);
+            camGame.targetZoom = 0.3;
+
+        case 1272:
+            camGame.tweenZoom(2, Conductor.secCrochet * 96);
+            camGame.fade(FlxColor.BLACK, Conductor.secCrochet * 96);
     }
 }
-
-startTime = Conductor.beatToTime(912);
-
-// spawnNotes = startTime <= 0;
 
 skipCountdown = true;
 
