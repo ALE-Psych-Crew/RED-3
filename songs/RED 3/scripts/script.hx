@@ -1,5 +1,10 @@
 import flixel.addons.effects.FlxTrail;
 
+import funkin.visuals.FXCamera;
+
+final splitCamera:FXCamera = new FXCamera(FlxG.width / 2, 0, FlxG.width / 2);
+splitCamera.exists = false;
+
 var dadTrail:FlxTrail;
 
 cacheCharacter('bfScared');
@@ -10,11 +15,15 @@ function postCreate()
 
     addBehindDad(dadTrail = new FlxTrail(dad, null, 5, 10));
 
-    camGame.zoomSpeed = 4;
-    camGame.angleSpeed = 4;
-    camHUD.alpha = 0;
-
     camGame.fade(FlxColor.BLACK, 0);
+    camGame.angleSpeed = 4;
+    camGame.zoomSpeed = 4;
+
+    splitCamera.setShaders([shader]);
+
+    FlxG.cameras.insert(splitCamera, 1, true);
+
+    camHUD.alpha = 0;
 
     opponentStrumLines.members[0].alpha = 0.5;
 }
@@ -246,12 +255,191 @@ function onSafeBeatHit(curBeat:Int)
             camGame.angle = -90;
 
             speed = 2;
+
+        case 712:
+            camGame.angle = 0;
+
+            camGame.targetZoom = 0.4;
+
+        case 776:
+            camGame.targetZoom = 0.3;
+
+        case 792:
+            camGame.tweenZoom(0.5, Conductor.secCrochet * 8);
+
+        case 800:
+            camGame.cancelZoomTween();
+            camGame.targetZoom = 0.6;
+
+        case 804:
+            camGame.targetZoom = 0.5;
+
+        case 808:
+            camGame.targetZoom = 0.9;
+
+        case 824:
+            camGame.targetZoom = 0.8;
+
+        case 832:
+            camGame.targetZoom = 0.7;
+
+        case 836:
+            camGame.targetZoom = 0.6;
+
+        case 840:
+            camGame.targetZoom = 0.4;
+
+        case 842:
+            camGame.targetZoom = 0.45;
+
+        case 844:
+            camGame.targetZoom = 0.35;
+
+        case 846:
+            camGame.targetZoom = 0.4;
+
+        case 848:
+            camGame.targetZoom = 0.45;
+
+        case 856:
+            camGame.tweenZoom(0.3, Conductor.secCrochet * 8);
+
+        case 864:
+            camGame.cancelZoomTween();
+            camGame.targetZoom = 0.4;
+
+        case 868:
+            camGame.targetZoom = 0.5;
+
+        case 872:
+            camGame.targetZoom = 0.9;
+
+        case 888:
+            camGame.targetZoom = 0.8;
+
+        case 904:
+            camGame.zoomSpeed = 0.5;
+            camGame.targetZoom = 0.3;
+
+        case 912:
+            epicBars(FlxG.height / 2, Conductor.secCrochet * 6, FlxEase.elasticIn);
+
+            camHUD.targetZoom = 1;
+
+        case 920:
+            epicBars(0, Conductor.secCrochet, FlxEase.elasticOut);
+
+            changeCharacter(bf, 'bfScared');
+
+            shader.setFloat('bloom', 2);
+            shader.tween({bloom: 1}, Conductor.secCrochet * 16);
+
+            speed = 5;
+
+            dadStrumLine.speed = 2;
+
+            allowCameraMoving = false;
+
+            splitCamera.exists = true;
+
+            updateFunc = elapsed -> {
+                camGame.position.x = Math.sin(curTime * 6) * 200 + 75;
+                camGame.position.y = Math.cos(curTime * 8) * 100 + 500;
+
+                camGame.angle = Math.sin(curTime * 2) * 2.5;
+
+
+                splitCamera.position.x = Math.sin(curTime * 6) * 50 + 800;
+                splitCamera.position.y = Math.cos(curTime * 8) * 25 + 650;
+
+                splitCamera.angle = Math.cos(curTime * 2) * 2.5;
+            };
+
+            for (obj in uiGroup)
+            {
+                FlxTween.cancelTweensOf(obj);
+
+                obj.alpha = 0;
+            }
+
+            updateFunc(0);
+
+            camGame.snapToTarget();
+            splitCamera.snapToTarget();
+            
+            camGame.zoom = camGame.targetZoom = 0.4;
+            camGame.width = FlxG.width / 2;
+            camGame.zoomSpeed = 4;
+            camGame.bopModulo = 0;
+
+            splitCamera.zoomSpeed = 4;
+
+        case 936:
+            camGame.targetZoom = 0.3;
+
+            splitCamera.targetZoom = 0.8;
+
+            FlxTween.tween(dadStrumLine, {speed: 3}, Conductor.secCrochet * 2, {ease: FlxEase.cubeOut});
+
+        case 952:
+            camGame.targetZoom = 0.25;
+
+            splitCamera.targetZoom = 0.6;
+            
+            FlxTween.tween(dadStrumLine, {speed: 4}, Conductor.secCrochet * 2, {ease: FlxEase.cubeOut});
+
+        case 964:
+            camGame.targetZoom = 0.2;
+
+            FlxTween.tween(dadStrumLine, {speed: 5}, Conductor.secCrochet * 2, {ease: FlxEase.cubeOut});
+
+        case 968:
+            camGame.tweenZoom(0.4, Conductor.secCrochet * 16);
+            camGame.shake(0.0125, Conductor.secCrochet * 16);
+
+            FlxTween.tween(dadStrumLine, {speed: 50}, Conductor.secCrochet * 16);
+
+            splitCamera.tweenZoom(1.25, Conductor.secCrochet * 16);
+
+        case 984:
+            camGame.cancelZoomTween();
+            camGame.targetZoom = 0.3;
+
+            FlxTween.tween(camGame, {alpha: 0.25, width: FlxG.width}, Conductor.secCrochet, {ease: FlxEase.cubeOut});
+
+            FlxTween.cancelTweensOf(dadStrumLine);
+
+            dadStrumLine.speed = 2;
+
+            FlxTween.tween(splitCamera, {x: FlxG.width / 4}, Conductor.secCrochet * 4, {ease: FlxEase.cubeOut});
+
+        case 1000:
+            splitCamera.targetZoom = 0.9;
+
+        case 1016:
+            splitCamera.targetZoom = 0.8;
+
+        case 1032:
+            splitCamera.targetZoom = 0.7;
+
+        case 1044:
+            FlxTween.tween(splitCamera, {y: FlxG.height, alpha: 0}, Conductor.secCrochet * 4, {ease: FlxEase.cubeIn, onComplete: _ -> splitCamera.exists = false});
+            FlxTween.tween(splitCamera, {x: FlxG.height * 0.6}, Conductor.secCrochet * 4, {ease: FlxEase.cubeOut});
+
+            FlxTween.tween(splitCamera.flashSprite, {rotation: 5}, Conductor.secCrochet * 4, {ease: FlxEase.cubeOut});
+
+            FlxTween.tween(camGame, {alpha: 1}, Conductor.secCrochet * 4, {ease: FlxEase.cubeOut});
+
+        case 1048:
+            updateFunc = null;
+
+            allowCameraMoving = true;
     }
 }
 
-startTime = Conductor.beatToTime(0);
+startTime = Conductor.beatToTime(912);
 
-spawnNotes = startTime <= 0;
+// spawnNotes = startTime <= 0;
 
 skipCountdown = true;
 
