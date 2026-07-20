@@ -1,5 +1,7 @@
 {
     "title": "RED 3 Remake",
-    "titleState": "FreeplayState",
+    "states": {
+        "InitialState": "FreeplayState"
+    },
     "developerMode": true
 }
